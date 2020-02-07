@@ -109,6 +109,8 @@ class Server(object):
                         ua.SecurityPolicyType.Basic256Sha256_Sign
                                 ]
         self._policyIDs = ["Anonymous", "Basic256Sha256", "Username"]
+        
+        print("fork edition")
 
     def __enter__(self):
         self.start()
