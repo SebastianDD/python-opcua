@@ -508,6 +508,25 @@ class UaProcessor(object):
             self.logger.info("sending set publishing mode response")
             self.send_response(requesthdr.RequestHandle, seqhdr, response)
 
+        elif typeid == ua.NodeId(ua.ObjectIds.FindServersOnNetworkRequest_Encoding_DefaultBinary):
+            self.logger.info("find servers on network request")
+
+            params = struct_from_binary(ua.FindServersOnNetworkParameters, body)
+
+            response = ua.FindServersOnNetworkResponse()
+            response.Parameters.Servers = params.ServerCapabilityFilter
+            
+            # FIXME: Implement FindServersOnNetworkRequest
+            # Send dummy results to keep clients happy
+            # results = ua.FindServersOnNetworkResult()
+            # ids = params.ServerCapabilityFilter
+            # statuses = [ua.StatusCode(ua.StatusCodes.Good) for node_id in ids]
+            # results.Results = statuses
+            # response.Parameters = results
+            
+            self.logger.info("sending find server on network response")
+            self.send_response(requesthdr.RequestHandle, seqhdr, response)
+            
         else:
             self.logger.warning("Unknown message received %s", typeid)
             raise utils.ServiceError(ua.StatusCodes.BadServiceUnsupported)
